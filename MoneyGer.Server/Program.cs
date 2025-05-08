@@ -90,6 +90,21 @@ builder.Services.AddAuthentication(opt =>
     };
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalAndProd", policy =>
+    {
+        policy.WithOrigins(
+            "https://localhost:4200",
+            "http://localhost:4200",
+            "https://moneyger.netlify.app",
+            "http://moneyger.netlify.app"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -101,19 +116,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseCors(options => options.WithOrigins("https://localhost:4200","http://localhost:4200")
-.AllowAnyMethod()
-.AllowAnyHeader());
-app.UseCors(options => options.WithOrigins("https://moneyger.netlify.app","http://moneyger.netlify.app")
-.AllowAnyMethod()
-.AllowAnyHeader());
-
+app.UseCors("AllowLocalAndProd");
 app.UseHttpsRedirection();
-app.UseAuthentication();
+app.UseAuthentication();    
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllers();       
 
 app.MapFallbackToFile("/index.html");
 
