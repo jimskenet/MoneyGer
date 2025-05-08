@@ -89,15 +89,6 @@ builder.Services.AddAuthentication(opt =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JWTSetting.GetSection("securityKey").Value!))
     };
 });
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowNetlify", policy =>
-    {
-        policy.WithOrigins("https://moneyger.netlify.app")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
 
 var app = builder.Build();
 
@@ -114,7 +105,10 @@ if (app.Environment.IsDevelopment())
 app.UseCors(options => options.WithOrigins("https://localhost:4200","http://localhost:4200")
 .AllowAnyMethod()
 .AllowAnyHeader());
-app.UseCors("AllowNetlify");
+app.UseCors(options => options.WithOrigins("https://moneyger.netlify.app","http://moneyger.netlify.app")
+.AllowAnyMethod()
+.AllowAnyHeader());
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
