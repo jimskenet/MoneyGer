@@ -1,3 +1,4 @@
 export const environment = {
-  apiBaseUrl: 'https://localhost:7034/api'
+  production: true,
+  apiBaseUrl: 'https://moneyger.onrender.com/api'
 };
