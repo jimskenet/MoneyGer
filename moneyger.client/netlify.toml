@@ -1,7 +1,7 @@
 [build]
   base = "moneyger.client"
   command = "npm run build -- --configuration=production"
-  publish = "dist/moneyger.client/" 
+  publish = "dist/moneyger.client/browser" 
 
 [[redirects]]
   from = "/*"
